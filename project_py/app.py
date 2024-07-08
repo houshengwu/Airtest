@@ -34,7 +34,7 @@ try:
         
 except Exception as e:
     print(f"Error: {e}")
-
+poco("android.widget.FrameLayout")
 try:
     # Example: Finding the element by resourceId
     element = poco("com.tencent.mobileqq:id/k9j")
@@ -55,20 +55,18 @@ try:
 except Exception as e:
     print(f"Error: {e}")
     
-    
-# 假设 RecyclerView 的资源 ID 是 com.tencent.mobileqq:id/recycler_view
-recycler_view = poco("com.tencent.mobileqq:id/recycler_view")
-
+   
 try:
-    # 使用 .offspring() 方法获取 RecyclerView 中所有子孙元素
-    all_elements = recycler_view.offspring()
-
-    for element in all_elements:
-        # 假设元素是 TextView，获取其文本信息
-        text = element.get_text()
-        print(f"Element text: {text}")
+    element_s = poco("androidx.recyclerview.widget.RecyclerView")
+    for es in element_s:
+        tes = es.child().child().child().child().child().child().get_text()
+        tes_name = es.child().child().child().child().child().child().get_name()
+        print(tes,'54',tes_name)
 
 except Exception as e:
-    print(f"Error: {e}")
+    print(e)
+
+    
+# 使用路径进行元素查找
 
   
