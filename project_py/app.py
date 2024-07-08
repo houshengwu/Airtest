@@ -72,17 +72,27 @@ try:
         
         for ede in edc:
             name = ede.get_name()  # 假设这里使用正确的方法来获取元素的名称
-            print(name)
+            pos = ede.get_position()[0]  # 获取元素的位置信息
+            
             if name not in element_type:
-                
-                element_type[name] = None  # 使用字典的键来保持唯一性，值暂时设为 None
+                if float(pos) == 0.5:
+                    print('ues',name, float(pos))
+                    element_type[name] = f"时间"
+                elif float(pos) < 0.08:
+                    element_type[name] = f"头像"
+                elif 0.32 > float(pos) >= 0.08:
+                    element_type[name] = f"昵称"
+                elif 0.8 > float(pos) >= 0.35:
+                    element_type[name] = f"内容"
     
-    print(list(element_type.keys()))  # 将有序字典的键转换为列表输出
+    print(element_type)  # 将有序字典的键转换为列表输出
     
 except Exception as e:
     print(f"Error: {e}")
-
     
+    
+    
+
 
 
 
