@@ -42,12 +42,12 @@ try:
     print(len(element))
     if elementp.exists():
         for ip in elementp:
-            ptext =  ip.get_text()
+            ptext =  ip.get_text().replace(u'\xa0', u' ').replace(u'\xa0 ', u' ')
             print(ptext,"ptext")
     
     if element.exists():
         for i in element:
-            text = i.get_text().replace("\u200B", "").replace("^", "/NO")
+            text = i.get_text().replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO")
             print(f"Element text: {text}")
     else:
         print("Element not found")
@@ -55,18 +55,34 @@ try:
 except Exception as e:
     print(f"Error: {e}")
     
-   
-try:
-    element_s = poco("androidx.recyclerview.widget.RecyclerView")
-    for es in element_s:
-        tes = es.child().child().child().child().child().child().get_text()
-        tes_name = es.child().child().child().child().child().child().get_name()
-        print(tes,'54',tes_name)
-
-except Exception as e:
-    print(e)
 
     
-# 使用路径进行元素查找
+print('*'*100)   
 
-  
+from collections import OrderedDict
+
+try:
+    element_record = poco("com.tencent.mobileqq:id/root")
+    print(len(element_record), 'element_record')
+    
+    element_type = OrderedDict()  # 使用有序字典来保持顺序
+    
+    for ed in element_record:
+        edc = list(ed.child())  # 将生成器对象转换为列表，保证顺序
+        
+        for ede in edc:
+            name = ede.get_name()  # 假设这里使用正确的方法来获取元素的名称
+            print(name)
+            if name not in element_type:
+                
+                element_type[name] = None  # 使用字典的键来保持唯一性，值暂时设为 None
+    
+    print(list(element_type.keys()))  # 将有序字典的键转换为列表输出
+    
+except Exception as e:
+    print(f"Error: {e}")
+
+    
+
+
+
