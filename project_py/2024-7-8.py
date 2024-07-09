@@ -65,17 +65,21 @@ try:
                 for ink in element_nk:
 
                     print(ink,'ink')
-
-              #      ink_t = ink.child().child().offspring().get_name()
-                    ink_n = ink.child().offspring()[-1].get_text()
-                    pos_r = ink.child().offspring()[-1].get_position()[1]
                     
+                    ink_e =  ink.child().offspring()[-1]
                     
-                    if ink_n is not None:
+                    if ink_e.exists():
 
-                        print('ink',ink_n,pos_r)
+                  #      ink_t = ink.child().child().offspring().get_name()
+                        ink_n = ink_e.get_text()
+                        pos_r = ink_e.get_position()[1]
 
-                        mess.append( (ink_n,pos_r))
+
+                        if ink_n is not None:
+
+                            print('ink',ink_n,pos_r)
+
+                            mess.append( (ink_n,pos_r))
 
         if element_type[key] == '时间':
              # 使用 poco 查找元素
@@ -83,13 +87,17 @@ try:
             if element_t.exists():
             
                 for t in element_t:
+                    
+                    t_el = t.child()
+                    
+                    if t_el.exists():
 
-                    i_t = t.child().get_text()
-                    pos_r = t.child().get_position()[1]
-                    
-                    
-                    if i_t is not None:
-                        mess.append( (i_t,pos_r))
+                        i_t = clear_text(t_el.get_text())
+                        pos_r = t_el.get_position()[1]
+
+
+                        if i_t is not None:
+                            mess.append( (i_t,pos_r))
 
                                  
                 
