@@ -40,53 +40,69 @@ try:
             element = poco(key)
             if element.exists():
                 for i in element:
-                    text = i.child().child().child().child().get_text()
-                    pos_r = i.child().child().child().child().get_position()[1]
-                    if text is not None:
-                        # 处理特殊字符和不可见字符
-                        text = clear_text(text)
-                        
-                        mess.append( (text,pos_r))
-                        print(f"Element text: {text}")
-                    else:
-                        print("Text is None")
+                    elemen = i.child().child().child().child()
+                    
+                    if elemen.exists():
+
+                        text = elemen.get_text()
+                        pos_r = elemen.get_position()[1]
+                        if text is not None:
+                            # 处理特殊字符和不可见字符
+                            text = clear_text(text)
+
+                            mess.append( (text,pos_r))
+                            print(f"Element text: {text}")
+                        else:
+                            print("Text is None")
             else:
                 print("Element not found")
                 
         if element_type[key] == '昵称':
+            print(key,'key')
              # 使用 poco 查找元素
             element_nk = poco(key)
-            for ink in element_nk:
-                
-                ink_t = ink.child().child().offspring().get_name()
-                ink_n = ink.child().offspring()[2].get_text()
-                pos_r = ink.child().offspring()[2].get_position()[1]
+            if element_nk.exists():
+                for ink in element_nk:
 
-                print(ink_t,'ink',ink_n,pos_r)
-                
-                mess.append( (ink_n,pos_r))
-                
+                    print(ink,'ink')
+
+              #      ink_t = ink.child().child().offspring().get_name()
+                    ink_n = ink.child().offspring()[-1].get_text()
+                    pos_r = ink.child().offspring()[-1].get_position()[1]
+                    
+                    
+                    if ink_n is not None:
+
+                        print('ink',ink_n,pos_r)
+
+                        mess.append( (ink_n,pos_r))
+
         if element_type[key] == '时间':
              # 使用 poco 查找元素
             element_t = poco(key)
+            if element_t.exists():
             
-            for t in element_t:
-                
-                i_t = t.child().get_text()
-                pos_r = t.child().get_position()[1]
-                
-                mess.append( (i_t,pos_r))
-                
-                
-                
-                
-                
-                
-                
+                for t in element_t:
+
+                    i_t = t.child().get_text()
+                    pos_r = t.child().get_position()[1]
+                    
+                    
+                    if i_t is not None:
+                        mess.append( (i_t,pos_r))
+
+                                 
                 
 except Exception as e:
     print(f"Error: {e}")
 
     
 print(mess)
+    
+
+sorted_data = sorted(mess, key=lambda x: x[1], reverse=False)
+
+# 输出排序后的结果
+for item in sorted_data:
+    print(item[0])
     
