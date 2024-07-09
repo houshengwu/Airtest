@@ -18,7 +18,7 @@ poco = AndroidUiautomationPoco()
 mess = []
 
 def clear_text(text_):
-    text_c = text_.replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO").replace("\n", " ").replace("\t", " ")
+    text_c = text_.replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO").replace("\n", " ").replace("\t", " ").replace("\u2005", " ")
     return text_c
 
 from collections import OrderedDict
@@ -50,7 +50,7 @@ try:
                             # 处理特殊字符和不可见字符
                             text = clear_text(text)
 
-                            mess.append( (text,pos_r))
+                            mess.append( (text,pos_r,'内容'))
                             print(f"Element text: {text}")
                         else:
                             print("Text is None")
@@ -79,7 +79,7 @@ try:
 
                             print('ink',ink_n,pos_r)
 
-                            mess.append( (ink_n,pos_r))
+                            mess.append( (ink_n,pos_r,'昵称'))
 
         if element_type[key] == '时间':
              # 使用 poco 查找元素
@@ -97,20 +97,17 @@ try:
 
 
                         if i_t is not None:
-                            mess.append( (i_t,pos_r))
+                            mess.append( (i_t,pos_r,'时间'))
 
                                  
                 
 except Exception as e:
     print(f"Error: {e}")
 
-    
-print(mess)
-    
 
 sorted_data = sorted(mess, key=lambda x: x[1], reverse=False)
 
 # 输出排序后的结果
 for item in sorted_data:
-    print(item[0])
+    print(item)
     
