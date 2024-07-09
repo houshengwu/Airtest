@@ -17,6 +17,10 @@ poco = AndroidUiautomationPoco()
 
 mess = []
 
+def clear_text(text_):
+    text_c = text_.replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO").replace("\n", " ").replace("\t", " ")
+    return text_c
+
 from collections import OrderedDict
 
 try:
@@ -40,7 +44,8 @@ try:
                     pos_r = i.child().child().child().child().get_position()[1]
                     if text is not None:
                         # 处理特殊字符和不可见字符
-                        text = text.replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO").replace("\n", " ").replace("\t", " ")
+                        text = clear_text(text)
+                        
                         mess.append( (text,pos_r))
                         print(f"Element text: {text}")
                     else:
@@ -49,14 +54,36 @@ try:
                 print("Element not found")
                 
         if element_type[key] == '昵称':
-            pass
+             # 使用 poco 查找元素
+            element_nk = poco(key)
+            for ink in element_nk:
                 
-                
-                
-                
-                
-                
+                ink_t = ink.child().child().offspring().get_name()
+                ink_n = ink.child().offspring()[2].get_text()
+                pos_r = ink.child().offspring()[2].get_position()[1]
 
+                print(ink_t,'ink',ink_n,pos_r)
+                
+                mess.append( (ink_n,pos_r))
+                
+        if element_type[key] == '时间':
+             # 使用 poco 查找元素
+            element_t = poco(key)
+            
+            for t in element_t:
+                
+                i_t = t.child().get_text()
+                pos_r = t.child().get_position()[1]
+                
+                mess.append( (i_t,pos_r))
+                
+                
+                
+                
+                
+                
+                
+                
 except Exception as e:
     print(f"Error: {e}")
 
