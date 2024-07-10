@@ -14,14 +14,19 @@ class ElementAnalyzer:
     def __init__(self):
         # Initialize Airtest
         auto_setup(__file__)
+        self.analyzed_elements = None
 
         # Initialize Poco for Android UI automation
         self.poco = AndroidUiautomationPoco()
+        
+        self.analyzed_elements = self.analyze_elements()
+        
+
 
     def analyze_elements(self):
         try:
             element_record = self.poco("com.tencent.mobileqq:id/root")
-            print(len(element_record), 'element_record')
+         #   print(len(element_record), 'element_record')
             
             element_type = OrderedDict()  # 使用有序字典来保持顺序
             
@@ -41,6 +46,14 @@ class ElementAnalyzer:
                             element_type[name] = f"昵称"
                         elif 0.8 > float(pos) >= 0.35:
                             element_type[name] = f"内容"
+                            
+                        # 处理分析结果
+            if element_type:
+                print("分析结果:")
+                for name, category in element_type.items():
+                    print(f"-->{name}: {category}")
+            else:
+                print("分析失败，请检查日志信息。")
             
             return element_type  # 返回分析结果
         
@@ -51,10 +64,7 @@ class ElementAnalyzer:
 # 示例代码：创建类实例并调用方法
 if __name__ == "__main__":
     analyzer = ElementAnalyzer()
-    analyzed_elements = analyzer.analyze_elements()
-    if analyzed_elements:
-        print("分析结果:")
-        for name, category in analyzed_elements.items():
-            print(f"{name}: {category}")
-    else:
-        print("分析失败，请检查日志信息。")
+    
+    print(analyzer.analyzed_elements)
+
+
