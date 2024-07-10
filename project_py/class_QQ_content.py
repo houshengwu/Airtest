@@ -103,7 +103,7 @@ class ExtractContent:
                 while True:
                     ic = self.get_detail(idx-1)
                     if ic[2] == "昵称":
-                        tidy_list.append([item[0], item[2], ic[0]])
+                        tidy_list.append([self.get_sendtime(idx),item[0], item[2], ic[0]])
                         break
                     else:
                         idx-=1
@@ -118,6 +118,27 @@ class ExtractContent:
             return item
         else:
             print(f"索引 {idx} 超出范围。")
+            
+    def get_sendtime(self, idx):
+        if 1 <= idx <= len(self.sorted_data_with_index):
+            while idx >= 1:
+                if len(self.sorted_data_with_index) > 2 :
+                    print(f'这里##{idx}')
+                    if self.sorted_data_with_index[idx - 3][1][2] == '时间':
+                        return  self.sorted_data_with_index[idx - 3][1][0]
+                
+                    else:
+                        idx -= 1
+                    
+   
+        else:
+            raise IndexError("Index out of range")
+
+
+
+                    
+                
+        
             
             
 
