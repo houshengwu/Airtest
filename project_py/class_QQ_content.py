@@ -3,7 +3,7 @@ import sys
 import logging
 from airtest.core.api import *
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
-
+import re
 # 配置日志记录以减少不必要的输出
 logger = logging.getLogger("airtest")
 logger.setLevel(logging.ERROR)
@@ -20,12 +20,23 @@ class ExtractContent:
         self.messages = []
         self.analyze_elements()
         self.sorted_data_with_index = self.sort_and_print_messages()
+        
+        self.out_put_detail()
+        self.send_time = None
+        
+        
 
     def clear_text(self, text_):
-        """清理文本，去除特殊字符和空白符。"""
-        text_c = text_.replace("\u200B", "").replace(u'\xa0', u' ').replace("^", "/NO").replace("\n", " ").replace("\t", " ").replace("\u2005", " ")
+        #"""清理文本，去除特殊字符和空白符。"""
+        #"""清理文本，去除以\u开头的四位十六进制编码后跟一个空格。"""
+        # 使用正则表达式替换所有特殊字符和空白符为一个空格
+        text_ = re.sub(r'[\u200B\u00a0\n\t\u2005\u2705\u2795\x00]', ' ', text_)
+        
+    # 使用正则表达式替换所有以\u开头的四位十六进制编码后跟一个空格为一个空格
+        pattern = r'\\u[0-9a-fA-F]{4}\s'
+        text_c = re.sub(pattern, ' ', text_)
         return text_c
-
+    
     def analyze_elements(self):
         """分析不同类型的元素并提取信息。"""
         for key in self.element_type:
@@ -67,26 +78,48 @@ class ExtractContent:
                             i_t = self.clear_text(t_el.get_text())
                             pos_r = t_el.get_position()[1]
                             if i_t is not None:
+                                print(i_t,'i_t')
+                                self.send_time = i_t
                                 self.messages.append((i_t, pos_r, '时间'))
 
     def sort_and_print_messages(self):
         """对消息进行排序并打印。"""
         sorted_data = sorted(self.messages, key=lambda x: x[1], reverse=False)
         sorted_data_with_index = [(idx + 1, item) for idx, item in enumerate(sorted_data)]
-        
+        tidy_list = []
         print("排序后的消息:")
         for idx, item in sorted_data_with_index:
-            print(f"{idx}. {item}")
-        
+            pass
+        #    print(f"{idx}. {item}")
         return sorted_data_with_index
+    
+    def out_put_detail(self):       
+        tidy_list = []
+        for idx, item in self.sorted_data_with_index:
+            # 如果项目类型为 '内容' 且索引大于 1，则获取详细信息
+            if item[2] == '内容' and idx > 1:
+                
+                
+                while True:
+                    ic = self.get_detail(idx-1)
+                    if ic[2] == "昵称":
+                        tidy_list.append([item[0], item[2], ic[0]])
+                        break
+                    else:
+                        idx-=1
+                    
+        print(tidy_list,'=-=-=-=-=-=-=-=-')
+
     
     def get_detail(self, idx):
         """获取指定索引处的详细信息。"""
         if 1 <= idx <= len(self.sorted_data_with_index):
             item = self.sorted_data_with_index[idx - 1][1]
-            print(f"索引为 {idx} 的项目：{item}")
+            return item
         else:
             print(f"索引 {idx} 超出范围。")
+            
+            
 
 if __name__ == "__main__":
     # 获取当前脚本所在的目录路径
