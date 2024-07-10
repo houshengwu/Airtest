@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*-
 __author__ = "10101"
-
+# 取出元素 时间、昵称、头像、内容的元素
 import logging
 from airtest.core.api import *
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
