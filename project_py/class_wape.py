@@ -1,42 +1,33 @@
-# -*- encoding=utf8 -*-
-__author__ = "10101"
-
-import logging
+import os
 from airtest.core.api import *
-from poco.drivers.android.uiautomation import AndroidUiautomationPoco
-
-# Configure logging to suppress unnecessary output
-logger = logging.getLogger("airtest")
-logger.setLevel(logging.ERROR)
-
-# Initialize Airtest
-auto_setup(__file__)
-
-# Initialize Poco for Android UI automation
-poco = AndroidUiautomationPoco()
-
 
 # 获取屏幕尺寸
-#width, height = device().get_current_resolution()
+def get_screen_size():
+    result = os.popen("adb shell wm size").read()
+    width, height = result.split("Physical size: ")[-1].split("x")
+    return int(width), int(height)
 
-#print(width, height,'width, height')
+# 计算滑动起始点和终点
+def calculate_swipe_points(screen_width, screen_height):
+    start_x = screen_width // 2  # 屏幕宽度的中点
+    start_y = screen_height // 4  # 屏幕高度的1/4处（向上偏移一些）
+    end_x = screen_width // 2  # 屏幕宽度的中点
+    end_y = screen_height * 3 // 4  # 屏幕高度的3/4处（向下偏移一些）
+    return start_x, start_y, end_x, end_y
 
-width, height= 1080,2340
+# 获取当前屏幕尺寸
+screen_width, screen_height = get_screen_size()
 
-# 定义滑动起点和终点
-start_x = width // 1.2  # 屏幕宽度的中点
-start_y = height * 3 // 4  # 屏幕高度的3/4处（向下偏移一些，可以根据需要调整）
-end_x = width // 2  # 屏幕宽度的中点
-end_y = height // 4  # 屏幕高度的1/4处（向上偏移一些，可以根据需要调整）
+# 计算滑动起始点和终点
+start_x, start_y, end_x, end_y = calculate_swipe_points(screen_width, screen_height)
 
-print((end_x, end_y),(start_x, start_y))
-# 执行向上滑动操作
-#swipe((end_x, end_y),(start_x, start_y),  duration=1.5)
+# 发送向下滑动事件
+for i in range(0,10):
+    adb_command = f"adb shell input swipe {start_x} {start_y} {end_x} {end_y} 500"
+    os.system(adb_command)
 
+    # 可选：等待一段时间，观察滑动效果或执行后续操作
+    sleep(2)
 
-swipe((500, 200),(800, 800),  duration=1.5)
-# 可选：等待一段时间，观察滑动效果
-sleep(2)
-
-# 可选：获取滑动后的界面状态，执行其他操作
+# 可选：继续执行其他的 Airtest 测试步骤
 
