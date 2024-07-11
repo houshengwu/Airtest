@@ -18,11 +18,12 @@ class ExtractContent:
         self.element_type = element_type
         # 存储分析后的消息的列表
         self.messages = []
+        self.send_time = None
+        self.tidy_list = None
         self.analyze_elements()
         self.sorted_data_with_index = self.sort_and_print_messages()
-        
         self.out_put_detail()
-        self.send_time = None
+        
         
         
 
@@ -107,8 +108,8 @@ class ExtractContent:
                         break
                     else:
                         idx-=1
-                    
-        print(tidy_list,'=-=-=-=-=-=-=-=-')
+        
+        self.tidy_list = tidy_list
 
     
     def get_detail(self, idx):
@@ -130,7 +131,6 @@ class ExtractContent:
                     else:
                         idx -= 1
                     
-   
         else:
             raise IndexError("Index out of range")
 
@@ -165,4 +165,6 @@ if __name__ == "__main__":
     
     # 示例：获取索引为 2 的项目的详细信息
     extractor.get_detail(1)
+
+
 

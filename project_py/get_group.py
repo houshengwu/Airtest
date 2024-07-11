@@ -30,6 +30,8 @@ class ElementTextGetter:
                 index += 1  # 如果未获取到文本，则增加index继续循环
                 if index >= len(self.poco('com.tencent.mobileqq:id/ivTitleBtnLeft').sibling()):
                     break  # 如果index超出了元素列表的范围，则退出循环
+                    
+        return ee
     
 # 示例化类对象
 text_getter = ElementTextGetter()

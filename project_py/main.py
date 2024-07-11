@@ -9,18 +9,34 @@ from collections import OrderedDict
 current_dir = os.path.dirname(__file__)
 # 将当前目录添加到系统路径中
 sys.path.append(current_dir)
-
 # Configure logging to suppress unnecessary output
 logger = logging.getLogger("airtest")
 logger.setLevel(logging.ERROR)
 
+from class_mysql import UpLoadMysql #上传数据库
+from class_QQ_content import ExtractContent  #QQ信息提取
+from class_get_type import ElementAnalyzer #群聊的元素码提取
+from class_Swipe import Swipe #向下滑动
+from get_group import ElementTextGetter  #提取群名称
 
-from class_mysql import UpLoadMysql
+# 创建 ElementAnalyzer 的实例
+analyzer = ElementAnalyzer()
+# 调用 analyze_elements 方法进行元素分析
+analyzed_elements = analyzer.analyzed_elements 
 
 
-data = ['DSPIC30F2010-30I/SO  长期排单，价优，支持实单，需求联系，支持各种检测', '深圳市荃微科技刘leo']
+text_getter = ElementTextGetter()
+group_name = text_getter.get_element_text() #获取群名称
+# 实例化 ExtractContent 类对象，并传入分析结果
+extractor = ExtractContent(analyzed_elements)  #获得可见元素文本
+data_list = extractor.tidy_list
 
-upload_mysql = UpLoadMysql(data)
 
-# Call the upload method to insert data into MySQL
-upload_mysql.upload()
+for data in data_list:
+    data.append(group_name)
+    upload_mysql = UpLoadMysql(data) # 上传
+    
+swipe = Swipe()
+swipe.swipe()
+    
+

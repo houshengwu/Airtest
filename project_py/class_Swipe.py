@@ -12,7 +12,7 @@ class Swipe:
         self.start_x, self.start_y, self.end_x, self.end_y =self.calculate_swipe_points()
         
         
-        self.swipe()
+       # self.swipe()
 
 
     # 获取屏幕尺寸
@@ -38,4 +38,5 @@ class Swipe:
     # 可选：继续执行其他的 Airtest 测试步骤
     
 swipe = Swipe()
+
 
