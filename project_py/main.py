@@ -12,7 +12,7 @@ sys.path.append(current_dir)
 # Configure logging to suppress unnecessary output
 logger = logging.getLogger("airtest")
 logger.setLevel(logging.ERROR)
-
+import os   
 from class_mysql import UpLoadMysql #上传数据库
 from class_QQ_content import ExtractContent  #QQ信息提取
 from class_get_type import ElementAnalyzer #群聊的元素码提取
@@ -53,5 +53,8 @@ for i in range(0,100):
 
     swipe = Swipe()
     swipe.swipe()
+    
+    # 清空 CMD 窗口输出
+    os.system('cls')
 
 
