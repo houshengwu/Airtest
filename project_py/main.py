@@ -14,3 +14,13 @@ sys.path.append(current_dir)
 logger = logging.getLogger("airtest")
 logger.setLevel(logging.ERROR)
 
+
+from class_mysql import UpLoadMysql
+
+
+data = ['DSPIC30F2010-30I/SO  长期排单，价优，支持实单，需求联系，支持各种检测', '深圳市荃微科技刘leo']
+
+upload_mysql = UpLoadMysql(data)
+
+# Call the upload method to insert data into MySQL
+upload_mysql.upload()
