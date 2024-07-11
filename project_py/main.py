@@ -30,14 +30,26 @@ group_name = text_getter.get_element_text() #获取群名称
 # 实例化 ExtractContent 类对象，并传入分析结果
 
 
-for i in range(0,1000):
+cache_data = []
+
+for i in range(0,100):
     extractor = ExtractContent(analyzed_elements)  #获得可见元素文本
     data_list = extractor.tidy_list
+    
+    for i_cache in data_list:
+        cache_data.append(i_cache[1])
+        if len(cache_data) > 5:
+            del cache_data[0]
+
+    print(cache_data)
+
+        
 
 
     for data in data_list:
-        data.append(group_name)
-        upload_mysql = UpLoadMysql(data) # 上传
+        if data[0] not  in cache_data:
+            data.append(group_name)
+            upload_mysql = UpLoadMysql(data) # 上传
 
     swipe = Swipe()
     swipe.swipe()
