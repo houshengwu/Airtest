@@ -28,15 +28,18 @@ analyzed_elements = analyzer.analyzed_elements
 text_getter = ElementTextGetter()
 group_name = text_getter.get_element_text() #获取群名称
 # 实例化 ExtractContent 类对象，并传入分析结果
-extractor = ExtractContent(analyzed_elements)  #获得可见元素文本
-data_list = extractor.tidy_list
 
 
-for data in data_list:
-    data.append(group_name)
-    upload_mysql = UpLoadMysql(data) # 上传
-    
-swipe = Swipe()
-swipe.swipe()
-    
+for i in range(0,1000):
+    extractor = ExtractContent(analyzed_elements)  #获得可见元素文本
+    data_list = extractor.tidy_list
+
+
+    for data in data_list:
+        data.append(group_name)
+        upload_mysql = UpLoadMysql(data) # 上传
+
+    swipe = Swipe()
+    swipe.swipe()
+
 
