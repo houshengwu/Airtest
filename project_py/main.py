@@ -12,13 +12,11 @@ sys.path.append(current_dir)
 # Configure logging to suppress unnecessary output
 logger = logging.getLogger("airtest")
 logger.setLevel(logging.ERROR)
-import os   
 from class_mysql import UpLoadMysql #上传数据库
 from class_QQ_content import ExtractContent  #QQ信息提取
 from class_get_type import ElementAnalyzer #群聊的元素码提取
 from class_Swipe import Swipe #向下滑动
 from get_group import ElementTextGetter  #提取群名称
-
 # 创建 ElementAnalyzer 的实例
 analyzer = ElementAnalyzer()
 # 调用 analyze_elements 方法进行元素分析
@@ -32,7 +30,7 @@ group_name = text_getter.get_element_text() #获取群名称
 
 cache_data = []
 
-for i in range(0,100):
+for i in range(0,1000):
     extractor = ExtractContent(analyzed_elements)  #获得可见元素文本
     data_list = extractor.tidy_list
     
@@ -54,7 +52,5 @@ for i in range(0,100):
     swipe = Swipe()
     swipe.swipe()
     
-    # 清空 CMD 窗口输出
-    os.system('cls')
 
 
